@@ -1,0 +1,35 @@
+{
+    "name": "@natatchikhinashvili/natnat",
+    "version": "1.0.0",
+    "description": "A short description of your package",
+    "main": "lib/index.js",
+    "scripts": {
+      "build": "tsc",
+      "test": "jest",
+      "prepublishOnly": "npm run build"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/devopsai7/test.git"
+    },
+    "keywords": [
+      "npm",
+      "publish",
+      "example"
+    ],
+    "author": "nata natanatuka33@gmail.com",
+    "license": "MIT",
+    "publishConfig": {
+      "registry": "https://registry.npmjs.org/"
+    },
+    "engines": {
+      "node": ">=14"
+    },
+    "dependencies": {
+    },
+    "devDependencies": {
+      "typescript": "^4.0.0",
+      "jest": "^29.0.0"
+    }
+  }
+  
