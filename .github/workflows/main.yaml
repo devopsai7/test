@@ -1,6 +1,10 @@
 name: Publish GPR
 
 on:
+  push:
+    branches:
+      - main
+
   workflow_call:
     inputs:
       release:
@@ -28,7 +32,7 @@ jobs:
       - name: Publish to GPR
         shell: bash
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
 
           TAG="${{ inputs.tag }}"
