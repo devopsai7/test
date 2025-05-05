@@ -1,0 +1,64 @@
+name: Publish GPR
+
+on:
+  workflow_call:
+    inputs:
+      release:
+        type: string
+        description: "Use tag. Release stream, temporary here for compatibility with old workflows"
+        required: false
+      tag:
+        type: string
+        description: "Release Stream (npm tag)"
+        required: false
+
+jobs:
+  publish-gpr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          registry-url: "https://npm.pkg.github.com/"
+          scope: "@tetherto"
+
+      - run: echo registry=https://npm.pkg.github.com/tetherto >> .npmrc
+        shell: bash
+
+      - name: Publish to GPR
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+
+          TAG="${{ inputs.tag }}"
+          RELEASE="${{ inputs.release }}"
+
+          if [ -z "$RELEASE" ]; then
+            RELEASE="tmp"
+          fi
+          if [ -z "$TAG" ]; then
+            TAG=$RELEASE
+          fi
+
+          echo "Base branch: ${{ github.ref }}"
+          echo "Event name: ${{ github.event_name }}"
+
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+
+          if [ "$TAG" = "dev" ] || [ "$TAG" = "tmp" ]; then
+            VERSION="${PACKAGE_VERSION}-tmp.${GITHUB_RUN_ID}"
+          else
+            VERSION="${PACKAGE_VERSION}"
+          fi
+
+          if [ "$VERSION" != "$PACKAGE_VERSION" ]; then
+            echo "Updating version to $VERSION"
+            npm version $VERSION --no-git-tag-version --allow-same-version
+          fi
+
+          echo "Publishing with tag: $TAG"
+          echo "Publishing version: $VERSION"
+
+          npm publish --tag $TAG
