@@ -31,6 +31,9 @@ jobs:
           scope: "@natatchikhinashvili"
           token: ${{ secrets.PAT_TOKEN }}
 
+      - run: echo registry=https://npm.pkg.github.com/natatchikhinashvili >> .npmrc
+        shell: bash
+
       - run: |
           echo "@natatchikhinashvili:registry=https://npm.pkg.github.com" > .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.PAT_TOKEN }}" >> .npmrc
