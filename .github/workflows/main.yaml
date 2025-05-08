@@ -22,17 +22,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4 
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: "18.x"
           registry-url: "https://npm.pkg.github.com/"
           scope: "@natatchikhinashvili"
-          token: ${{ secrets.NPM_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
 
       - run: |
           echo "@natatchikhinashvili:registry=https://npm.pkg.github.com" > .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
-          git config --global url."https://${{ secrets.NPM_TOKEN }}:@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://${{ secrets.PAT_TOKEN }}:@github.com/".insteadOf "https://github.com/"
 
       - name: Publish to GPR
         shell: bash
