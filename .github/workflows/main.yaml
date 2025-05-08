@@ -27,6 +27,7 @@ jobs:
           node-version: "18.x"
           registry-url: "https://npm.pkg.github.com/"
           scope: "@natatchikhinashvili"
+          token: ${{ secrets.NPM_TOKEN }}
 
       - run: |
           echo "@natatchikhinashvili:registry=https://npm.pkg.github.com" > .npmrc
@@ -36,7 +37,7 @@ jobs:
       - name: Publish to GPR
         shell: bash
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
 
           TAG="dev"
